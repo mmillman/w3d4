@@ -6,20 +6,22 @@ class Question
   attr_accessor :title, :body, :author_id
   attr_accessor :question_id #figure out how to protect this later
 
-  def self.get_all
+  def self.find_all
     query = "SELECT * FROM questions"
-    result = AA_QuestionsDatabase.instance.execute(query)
+    result = QuestionsDatabase.instance.execute(query)
   end
 
-  def self.get_by_question_id(question_id)
-    query = "SELECT * FROM questions WHERE question_id = #{question_id}"
-    result = AA_QuestionsDatabase.instance.execute(query)
-    result.empty? ? nil : parse(result[0])
+  def self.find_by_id(id)
+    query = "SELECT * FROM questions WHERE id = #{id}"
+    row_hash_result = QuestionsDatabase.instance.execute(query)
+    row_hash_result.empty? ? nil : parse(row_hash_result[0])
   end
 
-  def self.parse(result)
-    question = Question.new(result["title"], result["body"],
-                            result["author_id"], result["question_id"])
+  def self.parse(row_hash)
+    question = Question.new(title: row_hash["title"],
+                            body: row_hash["body"],
+                            author_id: row_hash["author_id"],
+                            question_id: row_hash["question_id"])
   end
 
   def initialize(options = {}) #title, body, author_id, question_id)
