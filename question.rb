@@ -22,10 +22,10 @@ class Question
                             result["author_id"], result["question_id"])
   end
 
-  def initialize(title, body, author_id, question_id)
-    @title, @body = title, body
-    @question_id = question_id
-    @author_id = author_id
+  def initialize(options = {}) #title, body, author_id, question_id)
+    @title, @body = options[:title], options[:body]
+    @question_id = options[:question_id]
+    @author_id = options[:author_id]
   end
 
 end
