@@ -3,9 +3,10 @@ require 'sqlite3'
 require_relative 'aa_questions'
 
 class Question
+  attr_accessor :title, :body, :author_id
+  attr_accessor :question_id #figure out how to protect this later
 
-
-  def self.get_all_question
+  def self.get_all
     query = "SELECT * FROM questions"
     result = AA_QuestionsDatabase.instance.execute(query)
   end
@@ -17,14 +18,13 @@ class Question
   end
 
   def self.parse(result)
-    question = Question.new(result[title], result[body], result["author_id"])
-    question.question_id = result["question_id"]
-    question
+    question = Question.new(result["title"], result["body"],
+                            result["author_id"], result["question_id"])
   end
 
-  def initialize(title, body, author_id)
+  def initialize(title, body, author_id, question_id)
     @title, @body = title, body
-    @question_id = nil
+    @question_id = question_id
     @author_id = author_id
   end
 

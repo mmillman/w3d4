@@ -4,9 +4,9 @@ require_relative 'aa_questions'
 
 class User
   attr_accessor :fname, :lname, :is_instructor
-  attr_reader :id
+  attr_accessor :id #figure out how to protect this later
 
-  def self.get_all_users
+  def self.get_all
     query = "SELECT * FROM users"
     result = AA_QuestionsDatabase.instance.execute(query)
   end
@@ -18,9 +18,8 @@ class User
   end
 
   def self.parse(result)
-    user = User.new(result["fname"], result["lname"], result["is_instructor"])
-    user.id = result["id"]
-    user
+    user = User.new(result["fname"], result["lname"],
+                    result["is_instructor"], result["id"])
   end
 
   def self.save(user)
@@ -32,17 +31,13 @@ class User
     AA_QuestionsDatabase.instance.execute(query)
   end
 
-  def initialize(fname, lname, is_instructor)
+  def initialize(fname, lname, is_instructor, id)
     @fname, @lname = fname, lname
-    @id = nil
+    @id = id
     @is_instructor = is_instructor
   end
 
   def average_karma
   end
-
-  # def get_users
-  #   AA_QuestionsDatabase.instance.execute("SELECT * FROM users")
-  # end
 
 end
