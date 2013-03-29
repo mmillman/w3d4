@@ -10,8 +10,8 @@ class Question
   end
 
   def self.find_by_id(id)
-    query = "SELECT * FROM questions WHERE id = #{id}"
-    row_hash_result = QuestionsDatabase.instance.execute(query)
+    query = "SELECT * FROM questions WHERE id = ?"
+    row_hash_result = QuestionsDatabase.instance.execute(query, id)
     row_hash_result.empty? ? nil : parse(row_hash_result[0])
   end
 
@@ -22,25 +22,46 @@ class Question
                             user_id: row_hash["user_id"])
   end
 
-  #UNFINISHED:
-  def self.most_followed(n)
-    top_questions_left = n
-
-    query <<-SQL
-      SELECT questions.id
-        FROM questions
-        JOIN question_followers
-          ON (questions.id = question_id)
-    GROUP BY questions.id;
-    SQL
-
-    result = QuestionsDatabase.instance.execute(query)
-  end
-
   def initialize(options = {})
     @title, @body = options[:title], options[:body]
     @id = options[:id]
     @user_id = options[:user_id]
   end
+
+  def asking_student
+    User.find_by_id(user_id)
+  end
+
+  def self.most_followed(n)
+    query = <<-SQL
+      SELECT COUNT(questions.id), questions.id, title, body, questions.user_id
+        FROM questions
+        JOIN question_followers
+          ON (questions.id = question_id)
+    GROUP BY question_id
+    ORDER BY 1 DESC
+    LIMIT ?
+    SQL
+
+    result_hash = QuestionsDatabase.instance.execute(query, n)
+    result_hash.map { |result| parse(result) }
+  end
+
+  def self.most_liked(n)
+    query = <<-SQL
+      SELECT COUNT(questions.id), questions.id, title, body, questions.user_id
+        FROM questions
+        JOIN question_likes
+          ON (questions.id = question_id)
+    GROUP BY question_id
+    ORDER BY 1 DESC
+    LIMIT ?
+    SQL
+
+    result_hash = QuestionsDatabase.instance.execute(query, n)
+    result_hash.map { |result| parse(result) }
+  end
+
+  def followers
 
 end

@@ -12,8 +12,8 @@ class User
   end
 
   def self.find_by_id(id)
-    query = "SELECT * FROM users WHERE id = #{id}"
-    row_hash_result = QuestionsDatabase.instance.execute(query)
+    query = "SELECT * FROM users WHERE id = ?"
+    row_hash_result = QuestionsDatabase.instance.execute(query, id)
     row_hash_result.empty? ? nil : parse(row_hash_result[0])
   end
 
@@ -45,10 +45,10 @@ class User
     query = <<-SQL
       SELECT *
         FROM questions
-       WHERE user_id = #{self.id}
+       WHERE user_id = ?
     SQL
 
-    question_list = QuestionsDatabase.instance.execute(query)
+    question_list = QuestionsDatabase.instance.execute(query, self.id)
     question_list.map do |question|
       Question.parse(question)
     end

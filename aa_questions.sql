@@ -69,7 +69,10 @@ CREATE TABLE question_likes(
 INSERT INTO question_likes(id, user_id, question_id)
 VALUES (NULL, 1, 1),
        (NULL, 1, 2),
-       (NULL, 2, 2);
+       (NULL, 2, 2),
+       (NULL, 4, 2),
+       (NULL, 1, 4);
+
 
 
 
