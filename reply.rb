@@ -10,8 +10,8 @@ class Reply
   end
 
   def self.find_by_id(id)
-    query = "SELECT * FROM replies WHERE id = #{id}"
-    row_hash_result = QuestionsDatabase.instance.execute(query)
+    query = "SELECT * FROM replies WHERE id = ?"
+    row_hash_result = QuestionsDatabase.instance.execute(query, id)
     row_hash_result.empty? ? nil : parse(row_hash_result[0])
   end
 
@@ -26,6 +26,25 @@ class Reply
     @id, @question_id = options[:id], options[:question_id]
     @parent_id = options[:parent_id]
     @body = options[:body]
+  end
+
+  def self.most_replied
+    query = <<-SQL
+        SELECT a.*
+          FROM replies a
+          JOIN replies b ON (a.id = b.parent_id)
+      GROUP BY a.id
+      ORDER BY COUNT(*) DESC
+      LIMIT 1
+    SQL
+    result = QuestionsDatabase.instance.execute(query)[0]
+    Reply.parse(result)
+  end
+
+
+  def replies
+
+
   end
 
 end
