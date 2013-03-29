@@ -26,4 +26,6 @@ class QuestionFollower
                             follower_id: row_hash["user_id"])
   end
 
+
+
 end

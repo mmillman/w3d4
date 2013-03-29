@@ -34,12 +34,14 @@ CREATE TABLE question_followers (
 
 INSERT INTO question_followers(id, question_id, user_id)
 VALUES (NULL, 1, 1),
-       (NULL, 1, 2),
-       (NULL, 1, 3),
-       (NULL, 1, 4),
-       (NULL, 3, 2),
        (NULL, 3, 4),
+       (NULL, 1, 4),
+       (NULL, 3, 3),
        (NULL, 4, 1),
+       (NULL, 3, 1),
+       (NULL, 3, 2),
+       (NULL, 2, 1),
+       (NULL, 4, 3),
        (NULL, 4, 2);
 
 
