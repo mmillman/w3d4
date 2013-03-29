@@ -55,7 +55,14 @@ class Reply
   end
 
   def child_replies
+    query = <<-SQL
+        SELECT *
+          FROM replies
+         WHERE parent_id = ?
+    SQL
 
+    replies = QuestionsDatabase.instance.execute(query, self.id)
+    replies.map { |reply| Reply.parse(reply) }
   end
 
 end
