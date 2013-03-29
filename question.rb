@@ -98,6 +98,17 @@ class Question
     users.map { |user| User.parse(user) }
   end
 
+  def replies
+    query = <<-SQL
+     SELECT *
+       FROM replies
+      WHERE question_id = ? AND parent_id IS NULL
+    SQL
+
+    replies = QuestionsDatabase.instance.execute(query, self.id)
+    replies.map { |reply| Reply.parse(reply) }
+  end
+
   # not quite done, but moving on to other functions
   # def most_replies(n)
   #   query = <<-SQL
