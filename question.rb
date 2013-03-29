@@ -75,4 +75,14 @@ class Question
     result_hash.map { |result| User.parse(result) }
   end
 
+  def num_likes
+    query = <<-SQL
+      SELECT COUNT(*)
+        FROM question_likes
+       WHERE question_id = ?
+    SQL
+
+    likes = QuestionsDatabase.instance.get_first_value(query, self.id)
+  end
+
 end
