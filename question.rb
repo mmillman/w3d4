@@ -85,6 +85,19 @@ class Question
     likes = QuestionsDatabase.instance.get_first_value(query, self.id)
   end
 
+  def likers
+    query = <<-SQL
+     SELECT users.*
+       FROM question_likes
+       JOIN users
+         ON user_id = users.id
+      WHERE question_id = ?
+    SQL
+
+    users = QuestionsDatabase.instance.execute(query, self.id)
+    users.map { |user| User.parse(user) }
+  end
+
   # not quite done, but moving on to other functions
   # def most_replies(n)
   #   query = <<-SQL
