@@ -63,5 +63,16 @@ class Question
   end
 
   def followers
+    query = <<-SQL
+      SELECT users.id, fname, lname, is_instructor
+        FROM question_followers
+        JOIN users
+          ON (question_followers.user_id = users.id)
+       WHERE question_id = ?
+    SQL
+
+    result_hash = QuestionsDatabase.instance.execute(query, self.id)
+    result_hash.map { |result| User.parse(result) }
+  end
 
 end
