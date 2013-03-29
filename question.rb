@@ -1,10 +1,8 @@
-require 'singleton'
 require 'sqlite3'
 require_relative 'aa_questions'
 
 class Question
-  attr_accessor :title, :body, :author_id
-  attr_accessor :question_id #figure out how to protect this later
+  attr_accessor :id, :title, :body, :user_id
 
   def self.find_all
     query = "SELECT * FROM questions"
@@ -18,16 +16,16 @@ class Question
   end
 
   def self.parse(row_hash)
-    question = Question.new(title: row_hash["title"],
+    question = Question.new(id: row_hash["id"],
+                            title: row_hash["title"],
                             body: row_hash["body"],
-                            author_id: row_hash["author_id"],
-                            question_id: row_hash["question_id"])
+                            user_id: row_hash["user_id"])
   end
 
-  def initialize(options = {}) #title, body, author_id, question_id)
+  def initialize(options = {})
     @title, @body = options[:title], options[:body]
-    @question_id = options[:question_id]
-    @author_id = options[:author_id]
+    @id = options[:id]
+    @user_id = options[:user_id]
   end
 
 end
