@@ -37,13 +37,24 @@ class Reply
       ORDER BY COUNT(*) DESC
       LIMIT 1
     SQL
+
     result = QuestionsDatabase.instance.execute(query)[0]
     Reply.parse(result)
   end
 
 
-  def replies
+  def parent_reply
+    query = <<-SQL
+        SELECT *
+          FROM replies
+         WHERE id = ?
+    SQL
 
+    reply = QuestionsDatabase.instance.execute(query, self.parent_id)[0]
+    Reply.parse(reply)
+  end
+
+  def child_replies
 
   end
 
