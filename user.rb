@@ -41,6 +41,20 @@ class User
     @is_instructor = options[:is_instructor]
   end
 
+  def asked_questions
+    query = <<-SQL
+      SELECT *
+        FROM questions
+       WHERE user_id = #{self.id}
+    SQL
+
+    question_list = QuestionsDatabase.instance.execute(query)
+    question_list.map do |question|
+      Question.parse(question)
+    end
+
+  end
+
   def average_karma
   end
 

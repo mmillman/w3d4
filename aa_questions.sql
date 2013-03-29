@@ -21,7 +21,7 @@ CREATE TABLE questions (
 
 INSERT INTO questions(id, title, body, user_id)
 VALUES (NULL, 'Is this working?', 'This is a question', 1),
-       (NULL, 'Time!!', 'Are these schedule for real?', 2),
+       (NULL, 'Time!!', 'Are these schedules for real?', 2),
        (NULL, 'Code Review', 'You guys enjoy it so far?', 2),
        (NULL, 'You guys rock', 'Will you give me an autograph?', 4);
 
